@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -23,3 +24,11 @@ async def read_fruit(id:int):
 @app.get('/greeting')
 async def personal_greeting(name:str = "John Doe"):
     return {"message":"Hi "+name}
+
+class User(BaseModel):
+    email: str
+    password: str
+
+@app.post("/login")
+async def login(user: User):
+    return user.email + " has successfully logged in with password: " + user.password
